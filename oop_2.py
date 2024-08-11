@@ -1,4 +1,3 @@
-import datetime
 
 class Employee:
     #class variables
@@ -9,13 +8,10 @@ class Employee:
         self.first = first
         self.last = last
         self.pay = pay
-        self.email = f"{first}.{last}@company.com"
 
         Employee.num_of_emps += 1
 
      #methods
-    def fullname(self):
-        return f"{self.first} {self.last}"
     
     def apply_raise(self):
         self.pay = int(self.pay * Employee.raise_amount)  # or self.raise_amount
@@ -51,6 +47,28 @@ class Employee:
         return len(self.fullname())
     
 
+    #with property decorator a method can be called as a attribute
+    @property
+    def email(self):
+        return f"{(self.first.lower())}.{self.last.lower()}@company.com"
+    
+    @property
+    def fullname(self):
+        return f"{self.first} {self.last}"
+    
+    #but using a setter a mehtod can be defined to set instance varaibles
+    @fullname.setter
+    def fullname(self, name):
+        first, last = name.split(" ")
+        self.first = first
+        self.last = last
+
+    #deleter
+    @fullname.deleter
+    def fullname(self):
+        self.first = None
+        self.last = None
+
 class Developer(Employee):
     raise_amount = 1.2
 
@@ -81,14 +99,12 @@ class Manager(Employee):
 
 
 if __name__ == '__main__':
-    emp_1 = Employee("Creseda", "Toyota", 160000)
-    emp_2 = Employee("Silvia", "Nissan", 200000)
-    #
-    print(emp_1)
-    print(str(emp_1))
-    print(repr(emp_1))
-    #
-    print(emp_1+emp_2)
-    #
-    #print(len(emp_1))
-    print(len(emp_1))
+    emp = Employee("Creseda", "Toyota", 160000)
+    #original
+    print(emp.fullname)
+    #setter
+    emp.fullname = "Cresta Toyota"
+    print(emp.fullname)
+    #delter
+    del emp.fullname
+    print(emp.fullname)
